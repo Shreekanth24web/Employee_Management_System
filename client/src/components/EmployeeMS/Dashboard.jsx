@@ -1,19 +1,54 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import '../Styles/Dashboard.css'
 import { Link, Outlet, useNavigate } from 'react-router-dom'
 import axios from 'axios'
 
 const Dashboard = () => {
 
-  const navigate=useNavigate()
-  const handleLogout = ()=>{
-    axios.get('http://localhost:3009/logout')
-  .then(res => {console.log(res)
-      navigate('/')
-  })
-    .catch(err=>console.log(err))
+  const navigate = useNavigate()
 
+  useEffect(() => {
+    handleProtectedRouteAccess();
+  }, []);
+
+  const handleLogout = () => {
+    // Remove token from local storage
+    localStorage.removeItem('token');
+    axios.get('http://localhost:3009/logout')
+      .then(res => {
+        console.log(res)
+        navigate('/')
+      })
+      .catch(err => console.log(err))
   }
+
+
+  const handleProtectedRouteAccess = () => {
+    // Retrieve token from local storage
+    const token = localStorage.getItem('token');
+    if (token) {
+      // Include token in the request headers
+      axios.get('http://localhost:3009/protectedRoute', {
+        headers: {
+          Authorization: token
+        }
+      })
+        .then(res => {
+          console.log(res.data);
+          // Handle the response from the protected route
+        })
+        .catch(err => {
+          console.log(err.response.data);
+          // Handle any errors, such as unauthorized access
+          navigate('/login'); // Redirect to login page if unauthorized access
+        });
+    } else {
+      // Redirect to login page if token is not available
+      navigate('/login');
+    }
+  };
+
+
   return (
     <div className="container-fluid box">
       <div className="row flex-nowrap">
@@ -43,7 +78,7 @@ const Dashboard = () => {
 
               <li onClick={handleLogout}>
                 <Link className="nav-link px-0 align-middle">
-                    <i className="fs-4 bi-power"></i> <span className="ms-1 d-none d-sm-inline">Logout</span>
+                  <i className="fs-4 bi-power"></i> <span className="ms-1 d-none d-sm-inline">Logout</span>
                 </Link>
               </li>
 

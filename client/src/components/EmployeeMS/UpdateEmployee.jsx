@@ -17,7 +17,7 @@ const UpdateEmployee = () => {
     mobile: '',
     desg: '',
     gen: '',
-    course: '',
+    courses: [],
     date: '',
     image: '',
   });
@@ -30,20 +30,35 @@ const UpdateEmployee = () => {
     setInput({ ...input, image: e.target.files[0] });
   };
 
+  const inputCheckBoxData = (e) => {
+    const { checked, value } = e.target;
+    if (checked) {
+      setInput((prevInput) => ({
+        ...prevInput,
+        courses: [...prevInput.courses, value],
+      }));
+    } else {
+      setInput((prevInput) => ({
+        ...prevInput,
+        courses: prevInput.courses.filter((course) => course !== value),
+      }));
+    }
+  };
   useEffect(() => {
     axios.get('http://localhost:3009/getData/' + id)
-      .then(res =>{ console.log(res.data)
-            setInput(res.data)
-            // navigate('/dashboard/employeeList')
+      .then(res => {
+        console.log(res.data)
+        setInput(res.data)
+        // navigate('/dashboard/employeeList')
       })
       .catch(err => console.log(err))
   }, [])
 
-  const handleUpdate = (e)=>{
+  const handleUpdate = (e) => {
     e.preventDefault()
     axios.put("http://localhost:3009/updateEmployee/" + id, input)
-      .then(ressult => {
-        console.log(ressult)
+      .then(result => {
+        console.log(result)
 
         navigate('/dashboard/employeeList')
       })
@@ -140,7 +155,7 @@ const UpdateEmployee = () => {
                     name="gen"
                     id="m"
                     value='Male'
-                    
+
                     checked={input.gen === 'Male'}
                   />
                 </div>
@@ -186,11 +201,11 @@ const UpdateEmployee = () => {
                   MCA
                 </label>
                 <input type="checkbox"
-                  onChange={inputData}
+                  onChange={inputCheckBoxData}
                   className="form-check-input"
                   name='course' id='mca'
-                  value="MAC"
-                  checked={input.course.includes('MAC')}
+                  value="MCA"
+                  checked={input.courses.includes('MCA')}
                 />
               </div>
               <div>
@@ -198,11 +213,11 @@ const UpdateEmployee = () => {
                   BCA
                 </label>
                 <input type="checkbox"
-                  onChange={inputData}
+                  onChange={inputCheckBoxData}
                   className="form-check-input"
                   name='course' id='bca'
                   value="BCA"
-                  checked={input.course.includes('BCA')}
+                  checked={input.courses.includes('BCA')}
                 />
               </div>
               <div>
@@ -210,11 +225,11 @@ const UpdateEmployee = () => {
                   BSC
                 </label>
                 <input type="checkbox"
-                  onChange={inputData}
+                  onChange={inputCheckBoxData}
                   className="form-check-input"
                   name='course' id='bsc'
                   value="BSC"
-                  checked={input.course.includes('BSC')}
+                  checked={input.courses.includes('BSC')}
                 />
               </div>
               <div>
@@ -222,11 +237,11 @@ const UpdateEmployee = () => {
                   BE
                 </label>
                 <input type="checkbox"
-                  onChange={inputData}
+                  onChange={inputCheckBoxData}
                   className="form-check-input"
                   name='course' id='be'
                   value="BE"
-                  checked={input.course.includes('BE')}
+                  checked={input.courses.includes('BE')}
                 />
               </div>
 

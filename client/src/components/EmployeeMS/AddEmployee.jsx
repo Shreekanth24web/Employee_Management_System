@@ -20,10 +20,12 @@ const AddEmployee = () => {
     mobile: '',
     desg: '',
     gen: '',
-    course: '',
-    date:'',
+    courses: [],
+    date: '',
     image: '',
   });
+
+
 
   const navigate = useNavigate()
   const inputData = (e) => {
@@ -33,13 +35,29 @@ const AddEmployee = () => {
     setInput({ ...input, image: e.target.files[0] });
   };
 
+
+  const inputCheckBoxData = (e) => {
+    const { checked, value } = e.target;
+    if (checked) {
+      setInput((prevInput) => ({
+        ...prevInput,
+        courses: [...prevInput.courses, value],
+      }));
+    } else {
+      setInput((prevInput) => ({
+        ...prevInput,
+        courses: prevInput.courses.filter((course) => course !== value),
+      }));
+    }
+  };
+
   const handleSubmit = (e) => {
     e.preventDefault()
-    if(!input.name || !input.email || !input.mobile||!input.desg||!input.gen||!input.course||!input.date){
+    if (!input.name || !input.email || !input.mobile || !input.desg || !input.gen || input.courses.length === 0 || !input.date) {
       Swal.fire({
         title: "Please fill all details ",
         icon: "warning",
-        width:'500px', 
+        width: '500px',
         showClass: {
           popup: `
             animate__animated
@@ -55,14 +73,13 @@ const AddEmployee = () => {
           `
         }
       });
-    } else{
+    } else {
       axios.post("http://localhost:3009/addEmployee", input)
-        .then(ressult => {
-          console.log(ressult)
-  
+        .then(result => {
+          console.log("Addemployee-->",result)
           navigate('/dashboard/employeeList')
         })
-        .catch(err => console.log(err))
+        .catch(err => console.log("Addemployee Error-->",err))
     }
   }
   return (
@@ -125,10 +142,10 @@ const AddEmployee = () => {
 
               <div className='col-6'>
                 <div className='mt-4'>
-                  <input type="date" 
-                  onChange={inputData}
-                  className='form-control border-primary' 
-                  name='date'
+                  <input type="date"
+                    onChange={inputData}
+                    className='form-control border-primary'
+                    name='date'
                   />
                 </div>
               </div>
@@ -195,11 +212,13 @@ const AddEmployee = () => {
                   MCA
                 </label>
                 <input type="checkbox"
-                  onChange={inputData}
+
+                  onChange={inputCheckBoxData}
                   className="form-check-input"
-                  name='course' id='mca'
-                  value="MAC"
-                  checked={input.course.includes('MAC')}
+                  name='courses'
+                  id='mca'
+                  value="MCA"
+                  checked={input.courses.includes('MCA')}
                 />
               </div>
               <div>
@@ -207,11 +226,12 @@ const AddEmployee = () => {
                   BCA
                 </label>
                 <input type="checkbox"
-                  onChange={inputData}
+                  onChange={inputCheckBoxData}
                   className="form-check-input"
-                  name='course' id='bca'
+                  name='courses' 
+                  id='bca'
                   value="BCA"
-                  checked={input.course.includes('BCA')}
+                  checked={input.courses.includes('BCA')}
                 />
               </div>
               <div>
@@ -219,11 +239,11 @@ const AddEmployee = () => {
                   BSC
                 </label>
                 <input type="checkbox"
-                  onChange={inputData}
+                  onChange={inputCheckBoxData}
                   className="form-check-input"
-                  name='course' id='bsc'
+                  name='courses' id='bsc'
                   value="BSC"
-                  checked={input.course.includes('BSC')}
+                  checked={input.courses.includes('BSC')}
                 />
               </div>
               <div>
@@ -231,11 +251,11 @@ const AddEmployee = () => {
                   BE
                 </label>
                 <input type="checkbox"
-                  onChange={inputData}
+                  onChange={inputCheckBoxData}
                   className="form-check-input"
-                  name='course' id='be'
+                  name='courses' id='be'
                   value="BE"
-                  checked={input.course.includes('BE')}
+                  checked={input.courses.includes('BE')}
                 />
               </div>
 

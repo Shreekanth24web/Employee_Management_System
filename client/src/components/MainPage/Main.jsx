@@ -16,12 +16,10 @@ const Main = () => {
                     <Route path='/login' element={<Login />} />
 
                     <Route path='/dashboard' element={<Dashboard />}>
-
                          <Route path='' element={<Home />} />
                          <Route path='employeeList' element={<EmployeeList />} />
                          <Route path='addEmployee' element={<AddEmployee />} />
-                         <Route path='updateEmployee/:id' element={<UpdateEmployee />} />
-                         
+                         <Route path='updateEmployee/:id' element={<UpdateEmployee />} />   
                     </Route>
                </Routes>
           </BrowserRouter>

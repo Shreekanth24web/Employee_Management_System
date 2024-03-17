@@ -6,7 +6,7 @@ const EmployeeDataSchema = new mongoose.Schema({
       mobile:Number,
       desg:String,
       gen:String,
-      course:String ,
+      courses:[String],
       image: String,
       date:String,
 })

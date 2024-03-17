@@ -23,7 +23,7 @@ const Login = () => {
   };
 
   const handleSubmit = (e) => {
-    e.preventDefault()
+    e.preventDefault();
     if (!email || !password) {
       // alert popup warning message  
       Swal.fire({
@@ -35,18 +35,20 @@ const Login = () => {
         toast: true,
         timerProgressBar: true
       });
-
-    } else {
-      console.log("Login")
+    }
+    else {
+      console.log("Login");
       axios.post('http://localhost:3009/login', { email, password })
         .then(result => {
-          console.log(result)
-          if (result.data === "Success") {
-            navigate('/dashboard')
-            console.log("success")
-
-          } else if (result.data === 'The password is incorrect') {
+          console.log("login--->", result);
+          if (result.data.message === "Login successful") {
+            // Store token in local storage
+            localStorage.setItem('token', result.data.token);
+            navigate('/dashboard');
+            console.log("success");
+          } else if (result.data.message === 'Incorrect password') {
             // Alert popup for incorrect password
+            
             Swal.fire({
               position: "center",
               icon: "error",
@@ -56,8 +58,10 @@ const Login = () => {
               toast: true,
               timerProgressBar: true
             });
-          } else if (result.data === 'no record existed') {
+
+          } else if (result.data.message === 'No record exists with this email') {
             // Alert popup for Username not existed
+
             Swal.fire({
               position: "center",
               icon: "error",
@@ -67,13 +71,13 @@ const Login = () => {
               toast: true,
               timerProgressBar: true,
             });
+
           }
-
         })
-        .catch(err => console.log(err))
+        .catch(err => console.log("login error--->", err));
     }
+  };
 
-  }
   return (
     <div style={bodyStyle}>
 
