@@ -73,7 +73,7 @@ const AddEmployee = () => {
           <h4 className='text-white'>Add Employee Details</h4>
         </div>
       </div>
-
+ 
 
       <div style={bodyStyle} >
 

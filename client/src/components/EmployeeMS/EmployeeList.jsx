@@ -90,7 +90,7 @@ const EmployeeList = () => {
                         <table className="table table-success table-striped table-bordered table-hover">
                               <thead className='table table-dark'>
                                     <tr>
-                                          <th scope="col">ID</th>
+                                          <th scope="col">ID</th> 
                                           <th scope="col">Profile</th>
                                           <th scope="col">Name</th>
                                           <th scope="col">Email</th>
@@ -112,7 +112,7 @@ const EmployeeList = () => {
                                                 return (
                                                       <tr key={i}>
                                                             <th scope="row">{i + 1}</th>
-                                                            <td><img src={item.image} alt="Img_Error" /></td>
+                                                            <td>{<img src={item.image} alt={item.name} style={{ width: '80px' }} />}</td> 
                                                             <td>{item.name}</td>
                                                             <td>{item.email}</td>
                                                             <td>{item.mobile}</td>

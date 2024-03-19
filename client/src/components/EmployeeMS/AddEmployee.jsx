@@ -22,7 +22,7 @@ const AddEmployee = () => {
     gen: '',
     courses: [],
     date: '',
-    image: '',
+    image: null,
   });
 
 
@@ -31,8 +31,16 @@ const AddEmployee = () => {
   const inputData = (e) => {
     setInput({ ...input, [e.target.name]: e.target.value });
   };
+
   const handleFileChange = (e) => {
-    setInput({ ...input, image: e.target.files[0] });
+    const file = e.target.files[0];
+    // console.log("File--->",file)
+    // const reader = new FileReader()
+    // console.log("File reader--->",reader)
+    // reader.onload = () => {
+    setInput({ ...input, image: file });
+    // }
+    // reader.readAsDataURL(file)
   };
 
 
@@ -54,32 +62,43 @@ const AddEmployee = () => {
   const handleSubmit = (e) => {
     e.preventDefault()
     if (!input.name || !input.email || !input.mobile || !input.desg || !input.gen || input.courses.length === 0 || !input.date) {
-      Swal.fire({
-        title: "Please fill all details ",
-        icon: "warning",
-        width: '500px',
-        showClass: {
-          popup: `
-            animate__animated
-            animate__fadeInUp
-            animate__faster
-          `
-        },
-        hideClass: {
-          popup: `
-            animate__animated
-            animate__fadeOutDown
-            animate__faster
-          `
-        }
-      });
+    Swal.fire({
+      title: "Please fill all details ",
+      icon: "warning",
+      width: '500px',
+      showClass: {
+        popup: `
+          animate__animated
+          animate__fadeInUp
+          animate__faster
+        `
+      },
+      hideClass: {
+        popup: `
+          animate__animated
+          animate__fadeOutDown
+          animate__faster
+        `
+      }
+    });
     } else {
-      axios.post("http://localhost:3009/addEmployee", input)
-        .then(result => {
-          console.log("Addemployee-->",result)
-          navigate('/dashboard/employeeList')
-        })
-        .catch(err => console.log("Addemployee Error-->",err))
+    const formData = new FormData();
+    formData.append('name', input.name);
+    formData.append('email', input.email);
+    formData.append('mobile', input.mobile);
+    formData.append('desg', input.desg);
+    formData.append('gen', input.gen);
+    input.courses.forEach(course => {
+      formData.append('courses', course);
+    });
+    formData.append('date', input.date);
+    formData.append('image', input.image);
+    axios.post("http://localhost:3009/addEmployee", formData)
+      .then(result => {
+        console.log("Addemployee-->", result)
+        navigate('/dashboard/employeeList')
+      })
+      .catch(err => console.log("Addemployee Error-->", err))
     }
   }
   return (
@@ -228,7 +247,7 @@ const AddEmployee = () => {
                 <input type="checkbox"
                   onChange={inputCheckBoxData}
                   className="form-check-input"
-                  name='courses' 
+                  name='courses'
                   id='bca'
                   value="BCA"
                   checked={input.courses.includes('BCA')}
@@ -262,13 +281,15 @@ const AddEmployee = () => {
             </div>
 
             <div className='mt-2'>
-              <input type="file" name='image'
+              <input
+                type="file"
+                name='image'
                 accept='.png, .jpg'
                 onChange={handleFileChange}
                 className='form-control' />
             </div>
             <div className='mt-3'>
-              <button className='btn btn-primary w-100 fw-bold' >Add</button>
+              <button type='submit' className='btn btn-primary w-100 fw-bold' >Add</button>
             </div>
           </form>
         </div>

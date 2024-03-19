@@ -7,6 +7,10 @@ const UserModel = require('./models/UserData')
 
 const jwt = require('jsonwebtoken')
 
+const multer = require('multer');
+const path = require('path')
+
+
 const JWT_SECRET_KEY = 'your_secret_key'
 
 const app = express()
@@ -73,12 +77,29 @@ app.get('/admin_records', (req, res) => {
             .catch(err => res.json(err))
 })
 
+const storage = multer.diskStorage({
+      destination: function (req, file, cb) {
+            cb(null, 'uploads/employeeImgs');
+      },
+      filename: function (req, file, cb) {
+            cb(null,  Date.now() +"_"+ file.originalname);
+      }
+});
+
+const upload = multer({ storage: storage });
+
+
 //Add
-app.post('/addEmployee', async (req, res) => {
+app.post('/addEmployee', upload.single('image'), async (req, res) => {
       try {
             const { name, email, mobile, desg, gen, courses, image, date } = req.body;
             const coursesArray = Array.isArray(courses) ? courses : [courses];
+
+            const imageUrl = req.file ? req.file.filename : '';
+            console.log(imageUrl)
+
             // const img = req.file.buffer.toString('base64');
+
             const employee = await UserModel.create({
                   name,
                   email,
@@ -86,9 +107,10 @@ app.post('/addEmployee', async (req, res) => {
                   desg,
                   gen,
                   courses: coursesArray,
-                  image,
+                  image: imageUrl,
                   date
             });
+            await employee.save(); 
             res.status(201).json(employee);
       } catch (error) {
             res.status(400).json({ error: error.message });

@@ -19,17 +19,26 @@ const UpdateEmployee = () => {
     gen: '',
     courses: [],
     date: '',
-    image: '',
+    image: null,
   });
 
   const navigate = useNavigate()
   const inputData = (e) => {
     setInput({ ...input, [e.target.name]: e.target.value });
   };
-  const handleFileChange = (e) => {
-    setInput({ ...input, image: e.target.files[0] });
-  };
 
+  const handleFileChange = (e) => {
+    const file = e.target.files[0];
+    // console.log("File--->",file)
+    // const reader = new FileReader()
+    // console.log("File reader--->",reader)
+    // reader.onload = () => {
+    setInput({ ...input, image: file });
+    // }
+    // reader.readAsDataURL(file)
+  };;
+
+ 
   const inputCheckBoxData = (e) => {
     const { checked, value } = e.target;
     if (checked) {
@@ -45,6 +54,7 @@ const UpdateEmployee = () => {
     }
   };
   useEffect(() => {
+
     axios.get('http://localhost:3009/getData/' + id)
       .then(res => {
         console.log(res.data)
@@ -248,14 +258,15 @@ const UpdateEmployee = () => {
             </div>
 
             <div className='mt-2'>
-              <input type="file" name='image'
+              <input
+                type="file"
+                name='image'
                 accept='.png, .jpg'
                 onChange={handleFileChange}
-                value={input.image}
                 className='form-control' />
             </div>
             <div className='mt-3'>
-              <button className='btn btn-primary w-100 fw-bold' >Update</button>
+              <button type='submit' className='btn btn-primary w-100 fw-bold' >Update</button>
             </div>
           </form>
         </div>
