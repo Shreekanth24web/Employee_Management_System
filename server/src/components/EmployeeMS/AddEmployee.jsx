@@ -73,7 +73,7 @@ const AddEmployee = () => {
           <h4 className='text-white'>Add Employee Details</h4>
         </div>
       </div>
- 
+{/* C:\Users\91809\OneDrive\Desktop\Employee-Data-management\server\index.js */}
 
       <div style={bodyStyle} >
 

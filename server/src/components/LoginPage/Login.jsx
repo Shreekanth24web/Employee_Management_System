@@ -83,7 +83,7 @@ const Login = () => {
           <form onSubmit={handleSubmit}>
             <div className='m-4'>
               <input className='form-control mt-4 border-dark' type='email'
-                placeholder='Username' name='email'
+                placeholder='Username' name='email'  pattern="[^\s@]+@[^\s@]+\.[^\s@]+"
                 onChange={(e) => setEmail(e.target.value)}
               />
               <input className='form-control mt-4 border-dark' type="password"

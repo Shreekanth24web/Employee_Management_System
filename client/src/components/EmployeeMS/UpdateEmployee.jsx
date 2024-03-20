@@ -105,14 +105,16 @@ const UpdateEmployee = () => {
                 placeholder='Enter Email'
                 name='email'
                 value={input.email}
+                // pattern="[^\s@]+@[^\s@]+\.[^\s@]+"
                 className='form-control border-primary mt-4'
               />
             </div>
             <div>
-              <input type="number"
+              <input type="text"
                 onChange={inputData}
                 placeholder='Enter mobile No.'
                 name='mobile'
+                // pattern="[0-9]{10}"
                 value={input.mobile}
                 className='form-control border-primary mt-4'
               />

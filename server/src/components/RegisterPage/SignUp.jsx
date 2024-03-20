@@ -80,6 +80,7 @@ const SignUp = () => {
                                           <input className='form-control mt-4 border-dark'
                                                 type="email" placeholder='Enter Your E-mail'
                                                 name='email'
+                                                pattern="[^\s@]+@[^\s@]+\.[^\s@]+"
                                                 onChange={(e) => setEmail(e.target.value)}
                                           />
                                           <input className='form-control mt-4 border-dark'

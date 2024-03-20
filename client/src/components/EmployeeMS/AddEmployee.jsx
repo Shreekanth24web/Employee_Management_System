@@ -61,44 +61,65 @@ const AddEmployee = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault()
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(input.email)) {
+      Swal.fire({
+        title: 'Invalid Email',
+        text: 'Please enter a valid email address',
+        icon: 'error',
+        width: '500px',
+      });
+      return;
+    }
+
+    // Mobile number validation
+    const mobileRegex = /^[0-9]{10}$/;
+    if (!mobileRegex.test(input.mobile)) {
+      Swal.fire({
+        title: 'Invalid Mobile Number',
+        text: 'Please enter a valid 10-digit mobile number',
+        icon: 'error',
+        width: '450px',
+        position: "center",
+        showConfirmButton: false,
+        timer: 3000,
+        toast: true,
+        timerProgressBar: true
+      });
+      return;
+    }
     if (!input.name || !input.email || !input.mobile || !input.desg || !input.gen || input.courses.length === 0 || !input.date) {
-    Swal.fire({
-      title: "Please fill all details ",
-      icon: "warning",
-      width: '500px',
-      showClass: {
-        popup: `
-          animate__animated
-          animate__fadeInUp
-          animate__faster
-        `
-      },
-      hideClass: {
-        popup: `
-          animate__animated
-          animate__fadeOutDown
-          animate__faster
-        `
-      }
-    });
+      Swal.fire({
+        
+        title: "Please fill all details ",
+        text: 'Please enter missing details.',
+        icon: 'error',
+        width: '400px',
+        position: "center",
+        showConfirmButton: false,
+        timer: 3000,
+        toast: true,
+        icon: "warning",
+        timerProgressBar: true
+      });
     } else {
-    const formData = new FormData();
-    formData.append('name', input.name);
-    formData.append('email', input.email);
-    formData.append('mobile', input.mobile);
-    formData.append('desg', input.desg);
-    formData.append('gen', input.gen);
-    input.courses.forEach(course => {
-      formData.append('courses', course);
-    });
-    formData.append('date', input.date);
-    formData.append('image', input.image);
-    axios.post("http://localhost:3009/addEmployee", formData)
-      .then(result => {
-        console.log("Addemployee-->", result)
-        navigate('/dashboard/employeeList')
-      })
-      .catch(err => console.log("Addemployee Error-->", err))
+      const formData = new FormData();
+      formData.append('name', input.name);
+      formData.append('email', input.email);
+      formData.append('mobile', input.mobile);
+      formData.append('desg', input.desg);
+      formData.append('gen', input.gen);
+      input.courses.forEach(course => {
+        formData.append('courses', course);
+      });
+      formData.append('date', input.date);
+      formData.append('image', input.image);
+      axios.post("http://localhost:3009/addEmployee", formData)
+        .then(result => {
+          console.log("Addemployee-->", result)
+          navigate('/dashboard/employeeList')
+        })
+        .catch(err => console.log("Addemployee Error-->", err))
     }
   }
   return (
@@ -129,14 +150,17 @@ const AddEmployee = () => {
                 onChange={inputData}
                 placeholder='Enter Email'
                 name='email'
+                // pattern="[^\s@]+@[^\s@]+\.[^\s@]+"
                 className='form-control border-primary mt-4'
               />
             </div>
             <div>
-              <input type="number"
+              <input type="text"
                 onChange={inputData}
                 placeholder='Enter mobile No.'
                 name='mobile'
+                // pattern="[0-9]{10}"
+                title="Please enter a 10-digit mobile number"
                 className='form-control border-primary mt-4'
               />
             </div>
