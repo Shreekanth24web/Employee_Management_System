@@ -136,7 +136,7 @@ const AddEmployee = () => {
 
         <div className='col-5 add_employee_container' >
 
-          <form onSubmit={handleSubmit}>
+          <form onSubmit={handleSubmit}>  
             <div>
               <input type="text"
                 onChange={inputData}

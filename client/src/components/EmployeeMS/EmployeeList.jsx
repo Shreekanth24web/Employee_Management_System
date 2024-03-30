@@ -90,7 +90,7 @@ const EmployeeList = () => {
                         <table className="table table-success table-striped table-bordered table-hover">
                               <thead className='table table-dark'>
                                     <tr>
-                                          <th scope="col">ID</th> 
+                                          <th scope="col">ID</th>
                                           <th scope="col">Profile</th>
                                           <th scope="col">Name</th>
                                           <th scope="col">Email</th>

@@ -53,8 +53,8 @@ const UpdateEmployee = () => {
       }));
     }
   };
-  useEffect(() => {
 
+  useEffect(() => {
     axios.get('http://localhost:3009/getData/' + id)
       .then(res => {
         console.log(res.data)

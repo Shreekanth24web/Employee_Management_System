@@ -4,9 +4,7 @@ const cors = require('cors')
 const bcrypt = require("bcryptjs");
 const EmployeeModel = require('./models/Employee')
 const UserModel = require('./models/UserData')
-
 const jwt = require('jsonwebtoken')
-
 const multer = require('multer');
 const path = require('path')
 
@@ -19,7 +17,7 @@ app.use(cors())
 
 // MongoDB connection
 mongoose.connect("mongodb://127.0.0.1:27017/employeeMS", { useNewUrlParser: true, useUnifiedTopology: true })
-      .then(() => console.log("MongoDB connected"))
+      .then(() => console.log("MongoDB connected..."))
       .catch(err => console.error("MongoDB connection error:", err));
 
 app.post('/', (req, res) => {
@@ -77,15 +75,17 @@ app.get('/admin_records', (req, res) => {
             .catch(err => res.json(err))
 })
 
-const storage = multer.diskStorage({
-      destination: function (req, file, cb) {
-            cb(null, 'uploads/employeeImgs');
-      },
-      filename: function (req, file, cb) {
-            cb(null,  Date.now() +"_"+ file.originalname);
-      }
-});
-
+/* This code snippet is configuring the storage settings for handling file uploads using the `multer`
+middleware in Node.js. */
+// const storage = multer.diskStorage({
+//       destination: function (req, file, cb) {
+//             cb(null, 'uploads/employeeImgs');
+//       },
+//       filename: function (req, file, cb) {
+//             cb(null, Date.now() + "_" + file.originalname);
+//       }
+// });
+const storage = multer.memoryStorage();
 const upload = multer({ storage: storage });
 
 
@@ -110,7 +110,7 @@ app.post('/addEmployee', upload.single('image'), async (req, res) => {
                   image: imageUrl,
                   date
             });
-            await employee.save(); 
+            await employee.save();
             res.status(201).json(employee);
       } catch (error) {
             res.status(400).json({ error: error.message });
@@ -124,7 +124,6 @@ app.get('/', (req, res) => {
 })
 
 // Pagination route
-// app.get('/employees', getAllEmployees); 
 app.get('/employees', async (req, res) => {
       try {
             const page = parseInt(req.query.page) || 1;
@@ -206,5 +205,5 @@ app.get('/logout', (req, res) => {
 
 
 app.listen(3009, () => {
-      console.log("server is running")
+      console.log("server is running...")
 })
